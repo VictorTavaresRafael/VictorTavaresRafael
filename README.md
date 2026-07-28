@@ -31,4 +31,4 @@ Estudante de Engenharia de Software pela UTFPR, atualmente construindo interface
 
 #### 📊 Estatísticas
 
-![GitHub stats](https://github-readme-stats.vercel.app/api?username=VictorTavaresRafael&show_icons=true&theme=dark)
+![GitHub stats](https://github-stats-extended.vercel.app/api?username=VictorTavaresRafael&show_icons=true&theme=dark)
