@@ -33,7 +33,3 @@ Formado em Engenharia de Software pela UTFPR, atualmente construindo interfaces 
 #### 📫 Contato
 
 [![LinkedIn](https://img.shields.io/badge/-LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/victor-tavares-rafael-a13846236) [![Gmail](https://img.shields.io/badge/-Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:victor.tavares.rafael@gmail.com)
-
-#### 📊 Estatísticas
-
-![GitHub stats](https://github-stats-extended.vercel.app/api?username=VictorTavaresRafael&show_icons=true&theme=dark)
