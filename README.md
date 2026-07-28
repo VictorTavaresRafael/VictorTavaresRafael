@@ -7,7 +7,7 @@ Estudante de Engenharia de Software pela UTFPR, atualmente construindo interface
 💻 Trabalho com React, Next.js, TypeScript e Tailwind CSS no dia a dia<br>
 ☁️ Também tenho experiência com AWS, Python, SQL, Docker e Spark<br>
 🧪 Gosto de testes automatizados (Jest, React Testing Library, Cypress) e CI/CD<br>
-🌱 Sempre estudando — atualmente aprofundando conhecimentos em IA aplicada e dados<br>
+🌱 Sempre estudando, atualmente aprofundando conhecimentos em IA aplicada e dados<br>
 🤝 Background em projetos ágeis, colaboração entre equipes e boas práticas de código
 
 #### 🛠️ Tecnologias
