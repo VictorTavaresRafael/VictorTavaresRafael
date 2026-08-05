@@ -26,7 +26,6 @@ Formado em Engenharia de Software pela UTFPR, atualmente construindo interfaces 
 #### 📌 Projetos em destaque
 
 🔹 **[siga-gestao-de-academias](https://github.com/VictorTavaresRafael/siga)** — Sistema Integrado de Gestão de Academias desenvolvido como um PWA completo (Front-end, Back-end e Banco de Dados).<br>
-🔹 **[sistema-rastreamento-honey](https://github.com/VictorTavaresRafael/honey-agencia)** — Sistema de gestão eletrônica e rastreamento de pontos desenvolvido sob medida para uso comercial corporativo.<br>
 🔹 **[aplicativo-de-formulário-multi-etapas-para-flugo](https://github.com/VictorTavaresRafael/multi-step-form-app-for-flugo)** — Interface interativa desenvolvida com foco em UX e conversão.<br>
 🔹 **[victor_rafael — trajetória Compass UOL](https://github.com/VictorTavaresRafael/victor_rafael)** — Projetos e laboratórios de Engenharia de Dados em Nuvem AWS.
 
