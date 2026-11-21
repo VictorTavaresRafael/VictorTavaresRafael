@@ -6,7 +6,7 @@ Legenda: **[F]** fato pesquisado · **[H]** hipótese a validar · **[O]** opini
 
 | Papel | Projeto | Status |
 |---|---|---|
-| Principal | **Job Radar AI** (`radar-vagas`) — matching explicável, OSS self-hosted | Em desenvolvimento |
+| Principal | **Job Radar AI** (`radar-vagas`) — score explicável, rascunhos sem invenção | MVP pronto; próximo: eval |
 | Complementar técnico | **Regression Intelligence** → CLI + GitHub Action `blast-radius` (TS/JS) | Após v0.1 do Job Radar |
 | Absorvido | **Observability Toolkit** → vira "saúde das fontes" + filas/retries dentro do Job Radar | Não será produto |
 | Experimentos | MCP server do Job Radar · Design System Auditor (React) | Backlog |
@@ -32,53 +32,33 @@ Legenda: **[F]** fato pesquisado · **[H]** hipótese a validar · **[O]** opini
 | Design System Auditor | 33 |
 | Observability Toolkit | 28 |
 
-## 4. Job Radar AI — especificação do MVP (v0.1)
+## 4. Job Radar AI (`radar-vagas`): estado atual e próximos passos
 
-**Tagline:** seu radar de carreira open source — encontre as vagas certas e entenda *por que* combinam com você.
+### Já implementado (MVP do `SPEC.md`, CI verde: 121 testes, typecheck, lint, build)
+- Coletores Greenhouse, Lever, GitHub Issues e Remotive com `fetch` injetável e fixtures.
+- Normalização, dedup (empresa + título) com `alt_urls`.
+- Filtros eliminatórios por seção (requisito ≠ diferencial) + score determinístico explicado + LLM opcional validado por zod.
+- Palavras-chave de ATS ("tem e não escreveu" vs. "não tem").
+- Rascunhos com `verifyDraft` anti-invenção.
+- Kanban, histórico, métricas, export CSV, alerta Telegram, Basic Auth, deploy Vercel + Supabase + cron no Actions.
 
-**Princípios:** humano no controle · zero candidatura automática · zero fato inventado · respeito a ToS (sem scraping de LinkedIn/Indeed/Glassdoor).
+### Decisão de arquitetura
+**Manter a stack atual** (Next.js 16 + Drizzle + PGlite/Postgres + Actions como scheduler).
+Migrar para NestJS + BullMQ + Redis não se justifica: o volume é de duas coletas por dia e não há worker contínuo. Adicionar isso só para o currículo seria complexidade sem motivo, e isso pesa contra em entrevista.
 
-### Funcionalidades v0.1
-1. Perfil: upload de PDF → perfil estruturado editável (skills com evidência).
-2. Ingestão: APIs públicas Greenhouse / Lever / Ashby, RemoteOK/Remotive, colar URL/texto.
-3. Normalização + dedup (hash normalizado + similaridade de embedding).
-4. Extração estruturada via LLM (schema Zod): obrigatório, desejável, senioridade, modalidade, salário, restrição de país.
-5. Score explicável: fórmula determinística ponderada + trechos da vaga e do currículo + gaps.
-6. Dashboard com filtros + kanban de candidaturas com histórico.
-7. Eval set (~50 vagas rotuladas) + `pnpm eval` no CI (precisão/recall da extração).
-
-### v0.2+
-Currículo adaptado com rastreabilidade e diff · carta de apresentação · alertas · painel de saúde das fontes · tendências de skills · MCP server · extensão "clip".
-
-### Arquitetura
-
-```
-apps/web     Next.js App Router · shadcn/ui · TanStack Query/Table · Recharts
-apps/api     NestJS REST + OpenAPI · auth · domínio
-apps/worker  NestJS standalone + BullMQ (ingestão, extração LLM, embeddings, alertas)
-packages/    core (scoring puro) · adapters (SourceAdapter) · llm (providers) · ui
-infra        Postgres + pgvector · Redis · Docker Compose · GitHub Actions
-```
-
-| Tecnologia | Justificativa |
-|---|---|
-| pnpm + Turborepo | Tipos compartilhados web/api/worker |
-| BullMQ + Redis | Agendamento, rate limit de LLM, retry/backoff, DLQ |
-| Postgres + pgvector | Dedup e busca semântica sem vector DB extra |
-| Prisma | Migrações versionadas |
-| Provider LLM abstrato | Claude padrão, Ollama no self-hosted, BYOK |
-| Vitest · Testcontainers · Playwright | Unitário no scoring, integração com Postgres real, E2E |
-| Vercel + Railway | Deploy web / API, worker, banco, Redis |
-
-### Direção visual
-Dark mode padrão, cor de destaque própria, densidade estilo Linear/Attio, ⌘K (Raycast), skeletons, estados vazios com CTA, kanban acessível (dnd-kit), contraste AA.
+### Backlog proposto (cada item exige aprovação, porque o `SPEC.md` limita o escopo)
+1. **Eval do score**: conjunto rotulado de vagas reais (relevante/irrelevante + motivo de eliminação esperado), `npm run eval` com precisão/recall dos filtros e do limiar de score, resultado no README. É o maior diferencial para entrevista.
+2. **Coletor Ashby** (API pública de job board).
+3. **Saúde das fontes**: tabela `collection_runs` (fonte, duração, itens, erros) + página `/fontes`. Absorve o projeto Observability.
+4. **Demo pública** com dados seed e sem senha (modo somente leitura).
+5. **MCP server**: consultar vagas, score e pipeline pelo Claude.
+6. **Generalizar o perfil** (sair do `config/profile.ts` fixo) apenas se o objetivo for virar OSS para terceiros.
 
 ### Definição de pronto (v1.0)
-- Demo pública com dados seed, sem cadastro.
-- `docker compose up` em < 5 min.
-- CI: lint, typecheck, testes, eval com limiar mínimo, build de imagens.
-- README com GIF, diagrama, ADRs e resultados do eval.
-- 4+ semanas de uso real na própria busca.
+- Eval no CI com limiar mínimo e números no README.
+- Demo pública.
+- GIF + diagrama no README (o diagrama já existe).
+- 4+ semanas de uso real.
 
 ## 5. Regression Intelligence — v0.1
 
@@ -98,24 +78,21 @@ Referências: Zimmermann et al. (2004) "Mining Version Histories to Guide Softwa
 | Semana | Entrega |
 |---|---|
 | 0 | Polir SIGA · atualizar README do perfil |
-| 1–2 | Monorepo, auth, schema Prisma, design system, landing |
-| 3–4 | Adapters + BullMQ, dedup, listagem/filtros |
-| 5–6 | Extração LLM, scoring explicável, tela de detalhe |
-| 7 | Eval set no CI → post LinkedIn #1 |
-| 8 | Kanban, demo pública → release v0.1 |
-| 9–10 | Currículo rastreável, alertas, saúde das fontes → v0.2 |
-| 11 | MCP server |
-| 12 | Portfólio pessoal |
-| 13–20 | Regression Intelligence v0.1 + backtesting + artigo |
+| 1–2 | radar-vagas: eval do score no CI → post LinkedIn #1 |
+| 3 | Coletor Ashby + saúde das fontes |
+| 4–5 | Demo pública + GIF → release v1.0 |
+| 6 | MCP server |
+| 7 | Portfólio pessoal |
+| 8–15 | Regression Intelligence v0.1 + backtesting + artigo |
 
-Regra de corte: sem usuários além do autor até a semana 10 → manter como portfólio, sem SaaS.
+Regra de corte: sem usuários além do autor até a semana 8 → manter como portfólio, sem SaaS.
 
 ## 7. Pontos para entrevista
 
 1. Score explicável e medido (eval set, precisão/recall, regressão de prompt no CI).
-2. Idempotência e retry na ingestão (BullMQ, chaves de dedup, DLQ).
-3. Prevenção de alucinação no currículo (rastreabilidade de fatos).
-4. Custo/latência de LLM (cache por hash, modelo menor, batching).
-5. Isolamento multi-tenant, rate limit, chaves BYOK criptografadas.
+2. Dedup entre fontes e falhas isoladas por fonte/item (zod item a item).
+3. Prevenção de alucinação nos rascunhos (`verifyDraft`).
+4. Custo de LLM: vagas eliminadas não chamam o modelo; fallback determinístico.
+5. Drizzle + PGlite: mesmo schema em testes offline e produção; salvaguardas de deploy na Vercel.
 6. AST/grafo antes de LLM; validação com SZZ.
 7. UX: estados vazios, kanban acessível, atalhos.
