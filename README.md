@@ -25,6 +25,7 @@ Formado em Engenharia de Software pela UTFPR, atualmente construindo interfaces 
 
 #### 📌 Projetos em destaque
 
+🔹 **[radar-vagas](https://github.com/VictorTavaresRafael/radar-vagas)** — Painel que coleta vagas de APIs públicas (Greenhouse, Lever, GitHub, Remotive), dá um score de 0 a 100 com explicação, aponta palavras-chave de ATS faltantes e gera rascunhos de candidatura sem inventar fatos. Next.js 16, TypeScript, Drizzle, Postgres/PGlite, zod, Vitest, GitHub Actions.<br>
 🔹 **[siga-gestao-de-academias](https://github.com/VictorTavaresRafael/siga)** — Sistema Integrado de Gestão de Academias desenvolvido como um PWA completo (Front-end, Back-end e Banco de Dados).<br>
 🔹 **[aplicativo-de-formulário-multi-etapas-para-flugo](https://github.com/VictorTavaresRafael/multi-step-form-app-for-flugo)** — Interface interativa desenvolvida com foco em UX e conversão.<br>
 🔹 **[victor_rafael — trajetória Compass UOL](https://github.com/VictorTavaresRafael/victor_rafael)** — Projetos e laboratórios de Engenharia de Dados em Nuvem AWS.
